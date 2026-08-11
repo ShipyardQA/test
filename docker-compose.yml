@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  # Minimal service to validate external (Vault) BUILD ARG resolution end-to-end on QA.
+  # The API_KEY build arg is declared here so a "from provider" build-arg reference named
+  # API_KEY on the app set resolves and is injected at build time. This is the scenario that
+  # exercises the image-tag path (Shipyard's build_args_hash must match nautilus's generateHash,
+  # or the pod fails with MISSING_IMAGE / ImagePullBackOff).
+  buildarg-test:
+    build:
+      context: .
+      args:
+        - API_KEY
+    ports:
+      - "8080:8080"
